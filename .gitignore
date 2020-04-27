@@ -1,0 +1,10 @@
+# Python
+__pycache__/
+/*.egg-info
+/.eggs
+/build
+/dist
+
+# WASM
+/wasi-sdk-*
+*.wasm
