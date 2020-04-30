@@ -1,4 +1,10 @@
-import sys, pkg_resources, wasmtime
+import sys
+import wasmtime
+try:
+	from importlib import resources as importlib_resources # py3.7+ stdlib
+except ImportError:
+	import importlib_resources # py3.6 shim
+
 
 wasm_cfg = wasmtime.Config()
 wasm_cfg.cache = True
@@ -15,5 +21,5 @@ linker = wasmtime.Linker(store)
 wasi = linker.define_wasi(wasmtime.WasiInstance(store,
     "wasi_snapshot_preview1", wasi_cfg))
 yosys = linker.instantiate(wasmtime.Module(store,
-    pkg_resources.resource_string(__name__, "yosys.wasm")))
+    importlib_resources.read_binary(__package__, "yosys.wasm")))
 yosys.exports["_start"]()

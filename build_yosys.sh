@@ -9,9 +9,10 @@ if ! [ -d ${WASI_SDK} ]; then curl -L ${WASI_SDK_URL} | tar xzf -; fi
 # the compiled code.
 
 cat >yosys/Makefile.conf <<END
-CONFIG := wasi
+WASI_SDK := ../${WASI_SDK}
 
-WASI_PREFIX := ../${WASI_SDK}
+CONFIG := wasi
+PREFIX := /
 
 ENABLE_TCL := 0
 ENABLE_ABC := 0

@@ -1,9 +1,8 @@
 from setuptools import setup, find_packages
+from setuptools_scm.git import parse as parse_git
 
 
 def version():
-    from setuptools_scm.git import parse as parse_git
-
     yosys_git = parse_git("yosys")
     if yosys_git.exact:
         yosys_version = yosys_git.format_with("{tag}")
@@ -26,11 +25,16 @@ setup(
     version=version(),
     author="whitequark",
     author_email="whitequark@whitequark.org",
-    description="Custom WebAssembly build of Yosys used by nMigen as a fallback",
+    description="Specialized WebAssembly build of Yosys used by nMigen",
     long_description=long_description(),
     license="ISC", # same as Yosys
+    python_requires="~=3.6",
     setup_requires=["setuptools_scm", "wheel"],
-    install_requires=["wasmtime~=0.16.0"],
+    install_requires=[
+        "importlib_metadata; python_version<'3.7'",
+        "importlib_resources; python_version<'3.7'",
+        "wasmtime~=0.16.0"
+    ],
     packages=["nmigen_yosys"],
     package_data={"nmigen_yosys": ["yosys.wasm"]},
     project_urls={
