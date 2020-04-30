@@ -30,7 +30,7 @@ setup(
     long_description=long_description(),
     license="ISC", # same as Yosys
     setup_requires=["setuptools_scm", "wheel"],
-    install_requires=["wasmtime~=0.15.1"],
+    install_requires=["wasmtime~=0.16.0"],
     packages=["nmigen_yosys"],
     package_data={"nmigen_yosys": ["yosys.wasm"]},
     project_urls={
