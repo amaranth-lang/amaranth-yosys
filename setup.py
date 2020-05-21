@@ -28,7 +28,7 @@ setup(
     description="Specialized WebAssembly build of Yosys used by nMigen",
     long_description=long_description(),
     license="ISC", # same as Yosys
-    python_requires="~=3.6",
+    python_requires="~=3.5",
     setup_requires=["setuptools_scm", "wheel"],
     install_requires=[
         "importlib_metadata; python_version<'3.8'",
