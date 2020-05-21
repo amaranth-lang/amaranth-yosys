@@ -31,7 +31,7 @@ setup(
     python_requires="~=3.6",
     setup_requires=["setuptools_scm", "wheel"],
     install_requires=[
-        "importlib_metadata; python_version<'3.7'",
+        "importlib_metadata; python_version<'3.8'",
         "importlib_resources; python_version<'3.7'",
         "wasmtime~=0.16.0"
     ],
