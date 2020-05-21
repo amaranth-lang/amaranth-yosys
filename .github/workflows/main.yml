@@ -40,14 +40,14 @@ jobs:
         name: wheel
         path: dist/
     - name: Publish packages to Test PyPI
-      if: github.event_name == 'push'
+      if: github.event_name == 'push' && github.event.ref == 'refs/heads/master'
       uses: pypa/gh-action-pypi-publish@master
       with:
         user: __token__
         password: ${{ secrets.test_pypi_token }}
         repository_url: https://test.pypi.org/legacy/
     - name: Publish packages to PyPI
-      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+      if: github.event_name == 'push' && github.event.ref == 'refs/heads/release'
       uses: pypa/gh-action-pypi-publish@master
       with:
         user: __token__
