@@ -8,7 +8,7 @@ if ! [ -d ${WASI_SDK} ]; then curl -L ${WASI_SDK_URL} | tar xzf -; fi
 # That's necessary to reduce the startup latency, since currently wasmtime-py does not cache
 # the compiled code.
 
-cat >yosys/Makefile.conf <<END
+cat >yosys-src/Makefile.conf <<END
 WASI_SDK := ../${WASI_SDK}
 
 CONFIG := wasi
@@ -30,7 +30,7 @@ CXXFLAGS += -flto
 LDFLAGS += -flto -Wl,--strip-all
 END
 
-cat >yosys/frontends/verilog/preproc_stub.cc <<END
+cat >yosys-src/frontends/verilog/preproc_stub.cc <<END
 #include "preproc.h"
 
 YOSYS_NAMESPACE_BEGIN
@@ -44,7 +44,7 @@ void define_map_t::clear() {}
 YOSYS_NAMESPACE_END
 END
 
-cat >yosys/passes/cmds/design_stub.cc <<END
+cat >yosys-src/passes/cmds/design_stub.cc <<END
 #include "kernel/yosys.h"
 
 YOSYS_NAMESPACE_BEGIN
@@ -55,10 +55,10 @@ std::vector<RTLIL::Design*> pushed_designs;
 YOSYS_NAMESPACE_END
 END
 
-sed -e 's,new ezMiniSAT(),nullptr,' -i yosys/kernel/register.cc
+sed -e 's,new ezMiniSAT(),nullptr,' -i yosys-src/kernel/register.cc
 
 YOSYS_VER=$(python3 setup.py --version)
-YOSYS_GIT_REV=$(git -C yosys rev-parse --short HEAD | tr -d '\n')
+YOSYS_GIT_REV=$(git -C yosys-src rev-parse --short HEAD | tr -d '\n')
 YOSYS_VER_STR="nMigen Yosys ${YOSYS_VER} (git sha1 ${YOSYS_GIT_REV})"
 YOSYS_OBJS="\
 kernel/version_${YOSYS_GIT_REV}.cc \
@@ -91,5 +91,5 @@ passes/techmap/attrmap.o \
 backends/ilang/ilang_backend.o \
 backends/verilog/verilog_backend.o \
 "
-make -C yosys GIT_REV="${YOSYS_GIT_REV}" YOSYS_VER="${YOSYS_VER}" YOSYS_VER_STR="${YOSYS_VER_STR}" OBJS="${YOSYS_OBJS}" PRETTY=0
-cp yosys/yosys.wasm nmigen_yosys/
+make -C yosys-src GIT_REV="${YOSYS_GIT_REV}" YOSYS_VER="${YOSYS_VER}" YOSYS_VER_STR="${YOSYS_VER_STR}" OBJS="${YOSYS_OBJS}" PRETTY=0
+cp yosys-src/yosys.wasm nmigen_yosys/

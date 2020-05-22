@@ -4,26 +4,21 @@ jobs:
   build:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.6]
     steps:
       - name: Check out source code
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
           submodules: true
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python
         uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip setuptools setuptools_scm wheel
           sudo apt-get install flex bison
       - name: Build Yosys for WASM
         run: |
-          ./build_yosys.sh
+          ./build.sh
       - name: Build nmigen-yosys binary wheels
         run: |
           python setup.py bdist_wheel

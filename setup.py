@@ -3,7 +3,7 @@ from setuptools_scm.git import parse as parse_git
 
 
 def version():
-    yosys_git = parse_git("yosys")
+    yosys_git = parse_git("yosys-src")
     if yosys_git.exact:
         yosys_version = yosys_git.format_with("{tag}")
     else:
