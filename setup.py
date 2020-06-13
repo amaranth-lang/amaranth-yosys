@@ -36,7 +36,7 @@ setup(
         "wasmtime~=0.16.0"
     ],
     packages=["nmigen_yosys"],
-    package_data={"nmigen_yosys": ["yosys.wasm"]},
+    package_data={"nmigen_yosys": ["yosys.wasm", "share/**/**/**/*"]},
     project_urls={
         "Source Code": "https://github.com/nmigen/nmigen-yosys",
         "Bug Tracker": "https://github.com/nmigen/nmigen-yosys/issues",

@@ -8,3 +8,6 @@ __pycache__/
 # WASM
 /wasi-sdk-*
 *.wasm
+
+# Yosys
+/nmigen_yosys/share

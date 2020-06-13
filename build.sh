@@ -78,19 +78,28 @@ frontends/ilang/ilang_lexer.o \
 frontends/ilang/ilang_frontend.o \
 frontends/verilog/preproc_stub.o \
 frontends/verilog/const2ast.o \
+passes/proc/proc.o \
 passes/proc/proc_prune.o \
+passes/proc/proc_clean.o \
+passes/proc/proc_rmdead.o \
 passes/proc/proc_init.o \
 passes/proc/proc_arst.o \
+passes/proc/proc_mux.o \
+passes/proc/proc_dlatch.o \
 passes/proc/proc_dff.o \
-passes/proc/proc_clean.o \
 passes/cmds/plugin.o \
 passes/cmds/design_stub.o \
 passes/cmds/select.o \
 passes/cmds/delete.o \
 passes/memory/memory_collect.o \
 passes/techmap/attrmap.o \
+passes/techmap/flatten.o \
 backends/ilang/ilang_backend.o \
+backends/cxxrtl/cxxrtl_backend.o \
 backends/verilog/verilog_backend.o \
 "
 make -C yosys-src GIT_REV="${YOSYS_GIT_REV}" YOSYS_VER="${YOSYS_VER}" YOSYS_VER_STR="${YOSYS_VER_STR}" OBJS="${YOSYS_OBJS}" PRETTY=0 CXX="ccache clang"
+
 cp yosys-src/yosys.wasm nmigen_yosys/
+mkdir -p nmigen_yosys/share/include/backends/cxxrtl
+cp yosys-src/share/include/backends/cxxrtl/* nmigen_yosys/share/include/backends/cxxrtl/
