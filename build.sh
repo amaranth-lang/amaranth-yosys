@@ -1,7 +1,7 @@
 #!/bin/sh -ex
 
-WASI_SDK=wasi-sdk-10.0
-WASI_SDK_URL=https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-10/wasi-sdk-10.0-linux.tar.gz
+WASI_SDK=wasi-sdk-11.0
+WASI_SDK_URL=https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-11/wasi-sdk-11.0-linux.tar.gz
 if ! [ -d ${WASI_SDK} ]; then curl -L ${WASI_SDK_URL} | tar xzf -; fi
 
 # This script does a lot of really awful things to Yosys to make the WASM artifact smaller.
