@@ -101,5 +101,6 @@ backends/verilog/verilog_backend.o \
 make -C yosys-src GIT_REV="${YOSYS_GIT_REV}" YOSYS_VER="${YOSYS_VER}" YOSYS_VER_STR="${YOSYS_VER_STR}" OBJS="${YOSYS_OBJS}" PRETTY=0 CXX="ccache clang"
 
 cp yosys-src/yosys.wasm nmigen_yosys/
+rm -rf nmigen_yosys/share
 mkdir -p nmigen_yosys/share/include/backends/cxxrtl
 cp yosys-src/share/include/backends/cxxrtl/* nmigen_yosys/share/include/backends/cxxrtl/
