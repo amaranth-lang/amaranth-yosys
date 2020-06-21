@@ -33,7 +33,7 @@ setup(
     install_requires=[
         "importlib_metadata; python_version<'3.8'",
         "importlib_resources; python_version<'3.7'",
-        "wasmtime~=0.16.0"
+        "wasmtime~=0.17.0"
     ],
     packages=["nmigen_yosys"],
     package_data={"nmigen_yosys": ["yosys.wasm", "share/**/**/**/*"]},
