@@ -41,7 +41,7 @@ jobs:
         name: wheel
         path: dist/
     - name: Publish wheels to Test PyPI
-      if: github.event_name == 'push' && github.event.ref == 'refs/heads/master'
+      if: github.event_name == 'push' && github.event.ref == 'refs/heads/develop'
       uses: pypa/gh-action-pypi-publish@master
       with:
         user: __token__
