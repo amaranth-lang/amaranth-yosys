@@ -21,7 +21,7 @@ store = wasmtime.Store(wasmtime.Engine(wasm_cfg))
 linker = wasmtime.Linker(store)
 wasi = linker.define_wasi(wasmtime.WasiInstance(store,
     "wasi_snapshot_preview1", wasi_cfg))
-yosys = linker.instantiate(wasmtime.Module(store,
+yosys = linker.instantiate(wasmtime.Module(store.engine,
     importlib_resources.read_binary(__package__, "yosys.wasm")))
 try:
     yosys.exports["_start"]()
