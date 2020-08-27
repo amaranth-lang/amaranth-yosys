@@ -73,9 +73,9 @@ libs/bigint/BigInteger.o \
 libs/bigint/BigUnsigned.o \
 libs/sha1/sha1.o \
 frontends/ast/ast.o \
-frontends/ilang/ilang_parser.tab.o \
-frontends/ilang/ilang_lexer.o \
-frontends/ilang/ilang_frontend.o \
+frontends/rtlil/rtlil_parser.tab.o \
+frontends/rtlil/rtlil_lexer.o \
+frontends/rtlil/rtlil_frontend.o \
 frontends/verilog/preproc_stub.o \
 frontends/verilog/const2ast.o \
 passes/proc/proc.o \
@@ -94,7 +94,7 @@ passes/cmds/delete.o \
 passes/memory/memory_collect.o \
 passes/techmap/attrmap.o \
 passes/techmap/flatten.o \
-backends/ilang/ilang_backend.o \
+backends/rtlil/rtlil_backend.o \
 backends/cxxrtl/cxxrtl_backend.o \
 backends/verilog/verilog_backend.o \
 "
