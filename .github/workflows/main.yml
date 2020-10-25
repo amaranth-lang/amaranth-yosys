@@ -32,6 +32,10 @@ jobs:
         with:
           name: wheel
           path: dist/
+      - name: Test binary wheels
+        run: |
+          pip install dist/*.whl
+          python -m nmigen_yosys --help
   upload_wheels:
     needs: build
     runs-on: ubuntu-latest
