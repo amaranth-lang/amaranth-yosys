@@ -68,6 +68,7 @@ kernel/register.o \
 kernel/rtlil.o \
 kernel/log.o \
 kernel/calc.o \
+kernel/mem.o \
 kernel/yosys.o \
 libs/bigint/BigInteger.o \
 libs/bigint/BigUnsigned.o \
