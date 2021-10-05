@@ -17,13 +17,14 @@ wasi_cfg.inherit_stdin()
 wasi_cfg.inherit_stdout()
 wasi_cfg.inherit_stderr()
 
-store = wasmtime.Store(wasmtime.Engine(wasm_cfg))
-linker = wasmtime.Linker(store)
-wasi = linker.define_wasi(wasmtime.WasiInstance(store,
-    "wasi_snapshot_preview1", wasi_cfg))
-yosys = linker.instantiate(wasmtime.Module(store.engine,
+engine = wasmtime.Engine(wasm_cfg)
+linker = wasmtime.Linker(engine)
+linker.define_wasi()
+store = wasmtime.Store(engine)
+store.set_wasi(wasi_cfg)
+yosys = linker.instantiate(store, wasmtime.Module(engine,
     importlib_resources.read_binary(__package__, "yosys.wasm")))
 try:
-    yosys.exports["_start"]()
+    yosys.exports(store)["_start"](store)
 except wasmtime.ExitTrap as trap:
     sys.exit(trap.code)
