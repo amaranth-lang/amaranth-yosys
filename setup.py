@@ -37,7 +37,7 @@ setup(
     setup_requires=["setuptools_scm", "wheel"],
     install_requires=[
         "importlib_resources; python_version<'3.7'",
-        "wasmtime>=0.19,<0.28"
+        "wasmtime>=0.19,<0.31"
     ],
     packages=["nmigen_yosys"],
     package_data={"nmigen_yosys": ["yosys.wasm", "share/**/**/**/*"]},
