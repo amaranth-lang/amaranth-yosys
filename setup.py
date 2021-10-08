@@ -34,9 +34,8 @@ setup(
     long_description=long_description(),
     license="ISC", # same as Yosys
     python_requires="~=3.5",
-    setup_requires=["setuptools_scm", "wheel"],
     install_requires=[
-        "importlib_resources>=1.4; python_version<'3.7'",
+        "importlib_resources>=1.4; python_version<'3.9'",
         "wasmtime>=0.30,<0.31"
     ],
     packages=["nmigen_yosys"],
