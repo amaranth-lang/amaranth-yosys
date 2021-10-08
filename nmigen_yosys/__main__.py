@@ -2,9 +2,10 @@ import os
 import sys
 import wasmtime
 try:
-	from importlib import resources as importlib_resources # py3.7+ stdlib
-except ImportError:
-	import importlib_resources # py3.6 shim
+    from importlib import resources as importlib_resources
+    importlib_resources.files # py3.9+ stdlib
+except (ImportError, NameError):
+    import importlib_resources # py3.8- shim
 
 
 wasm_cfg = wasmtime.Config()
