@@ -4,7 +4,7 @@ import wasmtime
 try:
     from importlib import resources as importlib_resources
     importlib_resources.files # py3.9+ stdlib
-except (ImportError, NameError):
+except (ImportError, AttributeError):
     import importlib_resources # py3.8- shim
 
 
