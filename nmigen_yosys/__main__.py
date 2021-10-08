@@ -23,7 +23,7 @@ linker.define_wasi()
 store = wasmtime.Store(engine)
 store.set_wasi(wasi_cfg)
 yosys = linker.instantiate(store, wasmtime.Module(engine,
-    importlib_resources.read_binary(__package__, "yosys.wasm")))
+    (importlib_resources.files(__package__) / "yosys.wasm").read_bytes()))
 try:
     yosys.exports(store)["_start"](store)
 except wasmtime.ExitTrap as trap:
