@@ -26,11 +26,11 @@ def long_description():
 
 
 setup(
-    name="nmigen-yosys",
+    name="amaranth-yosys",
     version=version(),
     author="whitequark",
     author_email="whitequark@whitequark.org",
-    description="Specialized WebAssembly build of Yosys used by nMigen",
+    description="Specialized WebAssembly build of Yosys used by Amaranth HDL",
     long_description=long_description(),
     license="ISC", # same as Yosys
     python_requires="~=3.5",
@@ -38,11 +38,11 @@ setup(
         "importlib_resources>=1.4; python_version<'3.9'",
         "wasmtime>=0.30,<0.31"
     ],
-    packages=["nmigen_yosys"],
-    package_data={"nmigen_yosys": ["yosys.wasm", "share/**/**/**/*"]},
+    packages=["amaranth_yosys"],
+    package_data={"amaranth_yosys": ["yosys.wasm", "share/**/**/**/*"]},
     project_urls={
-        "Source Code": "https://github.com/nmigen/nmigen-yosys",
-        "Bug Tracker": "https://github.com/nmigen/nmigen-yosys/issues",
+        "Source Code": "https://github.com/amaranth-lang/amaranth-yosys",
+        "Bug Tracker": "https://github.com/amaranth-lang/amaranth-yosys/issues",
     },
     classifiers=[
         "License :: OSI Approved :: ISC License (ISCL)",

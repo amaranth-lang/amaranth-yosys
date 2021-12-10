@@ -31,11 +31,11 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: wheel
-          path: dist/nmigen_yosys-*.whl
+          path: dist/amaranth_yosys-*.whl
       - name: Test binary wheels
         run: |
-          pip install dist/nmigen_yosys-*.whl
-          python -m nmigen_yosys --help
+          pip install dist/amaranth_yosys-*.whl
+          python -m amaranth_yosys --help
   upload_wheels:
     needs: build
     runs-on: ubuntu-latest

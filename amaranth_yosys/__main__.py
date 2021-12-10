@@ -12,7 +12,7 @@ wasm_cfg = wasmtime.Config()
 wasm_cfg.cache = True
 
 wasi_cfg = wasmtime.WasiConfig()
-wasi_cfg.argv = ("nmigen-yosys", *sys.argv[1:])
+wasi_cfg.argv = ("amaranth-yosys", *sys.argv[1:])
 wasi_cfg.preopen_dir(".", ".")
 wasi_cfg.inherit_stdin()
 wasi_cfg.inherit_stdout()

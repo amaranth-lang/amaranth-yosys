@@ -10,4 +10,4 @@ __pycache__/
 *.wasm
 
 # Yosys
-/nmigen_yosys/share
+/amaranth_yosys/share

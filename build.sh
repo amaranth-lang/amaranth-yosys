@@ -60,7 +60,7 @@ sed -e 's,new ezMiniSAT(),nullptr,' -i yosys-src/kernel/register.cc
 
 YOSYS_PYPI_VER=$(python3 setup.py --version)
 YOSYS_GIT_REV=$(git -C yosys-src rev-parse --short HEAD | tr -d '\n')
-YOSYS_VER_STR='nMigen Yosys $(YOSYS_VER) '"(PyPI ver ${YOSYS_PYPI_VER}, git sha1 ${YOSYS_GIT_REV})"
+YOSYS_VER_STR='Amaranth Yosys $(YOSYS_VER) '"(PyPI ver ${YOSYS_PYPI_VER}, git sha1 ${YOSYS_GIT_REV})"
 YOSYS_OBJS="\
 kernel/version_${YOSYS_GIT_REV}.cc \
 kernel/driver.o \
@@ -101,7 +101,7 @@ backends/verilog/verilog_backend.o \
 "
 make -C yosys-src GIT_REV="${YOSYS_GIT_REV}" YOSYS_VER_STR="${YOSYS_VER_STR}" OBJS="${YOSYS_OBJS}" PRETTY=0 CXX="ccache clang"
 
-cp yosys-src/yosys.wasm nmigen_yosys/
-rm -rf nmigen_yosys/share
-mkdir -p nmigen_yosys/share/include/backends/cxxrtl
-cp yosys-src/share/include/backends/cxxrtl/* nmigen_yosys/share/include/backends/cxxrtl/
+cp yosys-src/yosys.wasm amaranth_yosys/
+rm -rf amaranth_yosys/share
+mkdir -p amaranth_yosys/share/include/backends/cxxrtl
+cp yosys-src/share/include/backends/cxxrtl/* amaranth_yosys/share/include/backends/cxxrtl/
