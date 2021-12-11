@@ -85,9 +85,11 @@ passes/proc/proc_clean.o \
 passes/proc/proc_rmdead.o \
 passes/proc/proc_init.o \
 passes/proc/proc_arst.o \
+passes/proc/proc_memwr.o \
 passes/proc/proc_mux.o \
 passes/proc/proc_dlatch.o \
 passes/proc/proc_dff.o \
+passes/opt/opt_expr.o \
 passes/cmds/plugin.o \
 passes/cmds/design_stub.o \
 passes/cmds/select.o \
