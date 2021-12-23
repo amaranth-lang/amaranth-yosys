@@ -79,6 +79,9 @@ frontends/rtlil/rtlil_lexer.o \
 frontends/rtlil/rtlil_frontend.o \
 frontends/verilog/preproc_stub.o \
 frontends/verilog/const2ast.o \
+passes/hierarchy/hierarchy.o \
+passes/hierarchy/uniquify.o \
+passes/hierarchy/submod.o \
 passes/proc/proc.o \
 passes/proc/proc_prune.o \
 passes/proc/proc_clean.o \
