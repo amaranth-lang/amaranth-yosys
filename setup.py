@@ -36,7 +36,7 @@ setup(
     python_requires="~=3.5",
     install_requires=[
         "importlib_resources>=1.4; python_version<'3.9'",
-        "wasmtime>=0.30,<0.33"
+        "wasmtime>=0.30"
     ],
     packages=["amaranth_yosys"],
     package_data={"amaranth_yosys": ["yosys.wasm", "share/**/**/**/*"]},
