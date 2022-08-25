@@ -3,6 +3,13 @@
 OS=`uname -s`
 if [ $OS = "Darwin" ] ; then
   WASI_OS="macos"
+  if command -v brew ; then
+    brew install make
+    brew install pkg-config
+    brew install gnu-sed
+    brew install ccache
+    brew install bison
+  fi
 else
   WASI_OS="linux"
 fi
