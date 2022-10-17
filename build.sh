@@ -70,7 +70,7 @@ std::vector<RTLIL::Design*> pushed_designs;
 YOSYS_NAMESPACE_END
 END
 
-sed -e 's,new ezMiniSAT(),nullptr,' -i yosys-src/kernel/register.cc
+sed -e 's,new ezMiniSAT(),nullptr,' -i.bak yosys-src/kernel/register.cc
 
 YOSYS_PYPI_VER=$(python3 setup.py --version)
 YOSYS_GIT_REV=$(git -C yosys-src rev-parse --short HEAD | tr -d '\n')
