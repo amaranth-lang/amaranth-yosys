@@ -7,6 +7,13 @@ The Amaranth HDL Yosys wheels provide a specialized `WebAssembly <https://webass
 
 Although this package is platform-independent, it depends on wasmtime-py wheels, which are currently available only for x86_64 Windows, Linux, and macOS. This is expected to improve in the future.
 
+Building
+========
+
+The primary build environment for this repository is the ``ubuntu-latest`` GitHub CI runner; packages are built on every push and automatically published from the ``release`` branch to PyPI.
+
+To reduce maintenance overhead, the only supported development environment for this repository is x86_64 Linux.
+
 License
 =======
 
