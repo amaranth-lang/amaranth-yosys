@@ -1,4 +1,8 @@
-on: push
+on:
+  push:
+  schedule:
+  # See the discussion in https://github.com/bytecodealliance/wasmtime-py/pull/99.
+  - cron: '0 0 * * 1' # every Monday
 name: CI
 jobs:
   build:

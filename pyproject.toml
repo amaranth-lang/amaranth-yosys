@@ -17,7 +17,9 @@ classifiers = [
 requires-python = "~=3.5"
 dependencies = [
   "importlib_resources>=1.4; python_version<'3.9'",
-  "wasmtime>=0.30,<2.0"
+  # See the discussion in https://github.com/bytecodealliance/wasmtime-py/pull/99 for
+  # the reasoning behind having no upper bound here.
+  "wasmtime>=1.0",
 ]
 
 [project.urls]
