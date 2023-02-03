@@ -45,6 +45,11 @@ jobs:
         run: |
           pip install dist/amaranth_yosys-*.whl
           python -m amaranth_yosys --help
+          python -m amaranth_yosys \
+            -p "read_ilang tests/inverter.il" \
+            -p "proc -nomux" \
+            -p "memory_collect" \
+            -p "write_verilog"
       - name: Print ccache statistics
         run: |
           ccache -s
