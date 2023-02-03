@@ -12,11 +12,11 @@ Versioning
 
 The version of this package (which is derived from the upstream Yosys package version) is comprised of five parts in a ``X.Y.Z.N.postM`` format:
 
-  1. ``X``: Yosys major version
-  2. ``Y``: Yosys minor version
-  3. ``Z``: Yosys patch version; only present for some Yosys releases, zero if not present
-  4. ``N``: Yosys node version; only present for unreleased Yosys snapshots (where it matches the ``N`` in the ``X.Y+N`` upstream version), zero for releases
-  5. ``postM``: package version, monotonically incrementing from the initial commit
+1. ``X``: Yosys major version
+2. ``Y``: Yosys minor version
+3. ``Z``: Yosys patch version; only present for some Yosys releases, zero if not present
+4. ``N``: Yosys node version; only present for unreleased Yosys snapshots (where it matches the ``N`` in the ``X.Y+N`` upstream version), zero for releases
+5. ``postM``: package version, monotonically incrementing from the initial commit
 
 Building
 ========
