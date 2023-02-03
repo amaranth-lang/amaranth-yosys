@@ -11,7 +11,9 @@ jobs:
           fetch-depth: 0
           submodules: true
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
+        with:
+          python-version: '>=3.7'
       - name: Install dependencies
         run: |
           python -m pip install setuptools_scm # for setup.py --version
@@ -29,7 +31,7 @@ jobs:
           ./build.sh
       - name: Build binary wheels
         run: |
-          pip wheel -e . -w dist/
+          pip wheel . -w dist/
       - name: Upload binary wheel artifact
         uses: actions/upload-artifact@v3
         with:
