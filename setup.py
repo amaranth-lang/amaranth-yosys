@@ -20,31 +20,6 @@ def version():
     return yosys_version + package_version
 
 
-def long_description():
-    with open("README.rst") as f:
-        return f.read()
-
-
 setup(
-    name="amaranth-yosys",
     version=version(),
-    author="whitequark",
-    author_email="whitequark@whitequark.org",
-    description="Specialized WebAssembly build of Yosys used by Amaranth HDL",
-    long_description=long_description(),
-    license="ISC", # same as Yosys
-    python_requires="~=3.5",
-    install_requires=[
-        "importlib_resources>=1.4; python_version<'3.9'",
-        "wasmtime>=0.30,<2.0"
-    ],
-    packages=["amaranth_yosys"],
-    package_data={"amaranth_yosys": ["yosys.wasm", "share/**/**/**/*"]},
-    project_urls={
-        "Source Code": "https://github.com/amaranth-lang/amaranth-yosys",
-        "Bug Tracker": "https://github.com/amaranth-lang/amaranth-yosys/issues",
-    },
-    classifiers=[
-        "License :: OSI Approved :: ISC License (ISCL)",
-    ],
 )

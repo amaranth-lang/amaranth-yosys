@@ -1,3 +1,31 @@
 [build-system]
-requires = ["wheel", "setuptools", "setuptools_scm"]
+requires = ["setuptools~=67.0", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
+
+[project]
+dynamic = ["version"]
+
+name = "amaranth-yosys"
+description = "Specialized WebAssembly build of Yosys used by Amaranth HDL"
+readme = "README.rst"
+license = {text = "ISC"}
+authors = [{name = "whitequark", email = "whitequark@whitequark.org"}]
+classifiers = [
+  "License :: OSI Approved :: ISC License (ISCL)",
+]
+
+requires-python = "~=3.5"
+dependencies = [
+  "importlib_resources>=1.4; python_version<'3.9'",
+  "wasmtime>=0.30,<2.0"
+]
+
+[project.urls]
+"Source Code" = "https://github.com/amaranth-lang/amaranth-yosys"
+"Bug Tracker" = "https://github.com/amaranth-lang/amaranth-yosys/issues"
+
+[tool.setuptools]
+packages = ["amaranth_yosys"]
+
+[tool.setuptools.package-data]
+amaranth_yosys = ["yosys.wasm", "share/**/**/**/*"]
