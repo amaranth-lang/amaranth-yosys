@@ -14,7 +14,6 @@ classifiers = [
   "License :: OSI Approved :: ISC License (ISCL)",
 ]
 
-requires-python = "~=3.5"
 dependencies = [
   "importlib_resources>=1.4; python_version<'3.9'",
   # See the discussion in https://github.com/bytecodealliance/wasmtime-py/pull/99 for
