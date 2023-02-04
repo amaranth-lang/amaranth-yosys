@@ -16,9 +16,7 @@ classifiers = [
 
 dependencies = [
   "importlib_resources>=1.4; python_version<'3.9'",
-  # See the discussion in https://github.com/bytecodealliance/wasmtime-py/pull/99 for
-  # the reasoning behind having no upper bound here.
-  "wasmtime>=1.0",
+  "wasmtime>=1,<6",
 ]
 
 [project.urls]
