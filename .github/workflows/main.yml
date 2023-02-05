@@ -1,9 +1,5 @@
-on:
-  push:
-  schedule:
-  # See the discussion in https://github.com/bytecodealliance/wasmtime-py/pull/99.
-  - cron: '0 0 * * 1' # every Monday
-name: CI
+on: push
+name: Build, test, and upload
 jobs:
   build:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
