@@ -1,7 +1,7 @@
 #!/bin/sh -ex
 
-WASI_SDK=wasi-sdk-11.0
-WASI_SDK_URL=https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-11/wasi-sdk-11.0-linux.tar.gz
+WASI_SDK=wasi-sdk-19.0
+WASI_SDK_URL=https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-19/wasi-sdk-19.0-linux.tar.gz
 if ! [ -d ${WASI_SDK} ]; then curl -L ${WASI_SDK_URL} | tar xzf -; fi
 
 # This script does a lot of really awful things to Yosys to make the WASM artifact smaller.
@@ -27,8 +27,8 @@ ENABLE_LIBYOSYS := 0
 ENABLE_PROTOBUF := 0
 ENABLE_ZLIB := 0
 
-CXXFLAGS += -flto
-LDFLAGS += -flto -Wl,--strip-all
+CXXFLAGS += -D_WASI_EMULATED_PROCESS_CLOCKS -flto
+LDFLAGS += -lwasi-emulated-process-clocks -flto -Wl,--strip-all
 END
 
 cat >yosys-src/frontends/verilog/preproc_stub.cc <<END
