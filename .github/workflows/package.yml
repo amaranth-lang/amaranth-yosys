@@ -52,6 +52,9 @@ jobs:
   publish:
     needs: build
     runs-on: ubuntu-latest
+    environment: publish
+    permissions:
+      id-token: write
     steps:
     - uses: actions/download-artifact@v4
       with:
@@ -61,15 +64,10 @@ jobs:
       if: ${{ github.event_name == 'push' && github.event.ref == 'refs/heads/develop' }}
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        user: __token__
-        password: ${{ secrets.test_pypi_token }}
         repository-url: https://test.pypi.org/legacy/
     - name: Publish wheels to PyPI
       if: ${{ github.event_name == 'push' && github.event.ref == 'refs/heads/release' }}
       uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        password: ${{ secrets.pypi_token }}
   release:
     needs: build
     runs-on: ubuntu-latest
