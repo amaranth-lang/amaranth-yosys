@@ -2,16 +2,16 @@ on: [push, pull_request]
 name: Build & publish
 jobs:
   build:
-    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    if: ${{ !contains(github.event.head_commit.message, 'skip ci') }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: true
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '>=3.7'
       - name: Install dependencies
@@ -19,7 +19,7 @@ jobs:
           python -m pip install setuptools_scm~=7.0 # for setup.py --version
           sudo apt-get install flex bison ccache
       - name: Set up caching
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/ccache
           key: ${{ runner.os }}-
@@ -33,7 +33,7 @@ jobs:
         run: |
           pip wheel . -w dist/
       - name: Upload binary wheel artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: wheel
           path: dist/amaranth_yosys-*.whl
@@ -53,19 +53,19 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: wheel
         path: dist/
     - name: Publish wheels to Test PyPI
-      if: github.event_name == 'push' && github.event.ref == 'refs/heads/develop'
+      if: ${{ github.event_name == 'push' && github.event.ref == 'refs/heads/develop' }}
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: __token__
         password: ${{ secrets.test_pypi_token }}
-        repository_url: https://test.pypi.org/legacy/
+        repository-url: https://test.pypi.org/legacy/
     - name: Publish wheels to PyPI
-      if: github.event_name == 'push' && github.event.ref == 'refs/heads/release'
+      if: ${{ github.event_name == 'push' && github.event.ref == 'refs/heads/release' }}
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: __token__
@@ -73,10 +73,10 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
-    if: "contains(github.event.head_commit.message, 'autorelease') && github.event_name == 'push' && github.ref == 'refs/heads/develop'"
+    if: ${{ contains(github.event.head_commit.message, 'autorelease') && github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
     steps:
       - name: Check out source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.PUSH_TOKEN }}
