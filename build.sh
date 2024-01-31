@@ -116,4 +116,4 @@ make -C yosys-src GIT_REV="${YOSYS_GIT_REV}" YOSYS_VER_STR="${YOSYS_VER_STR}" OB
 cp yosys-src/yosys.wasm amaranth_yosys/
 rm -rf amaranth_yosys/share
 mkdir -p amaranth_yosys/share/include/backends/cxxrtl
-cp yosys-src/share/include/backends/cxxrtl/* amaranth_yosys/share/include/backends/cxxrtl/
+cp -r yosys-src/share/include/backends/cxxrtl/runtime amaranth_yosys/share/include/backends/cxxrtl/
