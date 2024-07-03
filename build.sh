@@ -56,8 +56,6 @@ std::vector<RTLIL::Design*> pushed_designs;
 YOSYS_NAMESPACE_END
 END
 
-sed -e 's,new ezMiniSAT(),nullptr,' -i yosys-src/kernel/register.cc
-
 YOSYS_PYPI_VER=$(python3 setup.py --version)
 YOSYS_GIT_REV=$(git -C yosys-src rev-parse --short HEAD | tr -d '\n')
 YOSYS_VER_STR='Amaranth Yosys $(YOSYS_VER) '"(PyPI ver ${YOSYS_PYPI_VER}, git sha1 ${YOSYS_GIT_REV})"
@@ -72,10 +70,18 @@ kernel/mem.o \
 kernel/ff.o \
 kernel/fmt.o \
 kernel/scopeinfo.o \
+kernel/satgen.o \
+kernel/qcsat.o \
 kernel/yosys.o \
 libs/bigint/BigInteger.o \
 libs/bigint/BigUnsigned.o \
 libs/sha1/sha1.o \
+libs/ezsat/ezsat.o \
+libs/ezsat/ezminisat.o \
+libs/minisat/Options.o \
+libs/minisat/SimpSolver.o \
+libs/minisat/Solver.o \
+libs/minisat/System.o \
 frontends/ast/ast.o \
 frontends/ast/simplify.o \
 frontends/rtlil/rtlil_parser.tab.o \
@@ -97,7 +103,27 @@ passes/proc/proc_mux.o \
 passes/proc/proc_dlatch.o \
 passes/proc/proc_dff.o \
 passes/proc/proc_rom.o \
+passes/opt/opt.o \
+passes/opt/opt_merge.o \
+passes/opt/opt_mem.o \
+passes/opt/opt_mem_feedback.o \
+passes/opt/opt_mem_priority.o \
+passes/opt/opt_mem_widen.o \
+passes/opt/opt_muxtree.o \
+passes/opt/opt_reduce.o \
+passes/opt/opt_dff.o \
+passes/opt/opt_share.o \
+passes/opt/opt_clean.o \
 passes/opt/opt_expr.o \
+passes/opt/share.o \
+passes/opt/wreduce.o \
+passes/opt/opt_demorgan.o \
+passes/opt/rmports.o \
+passes/opt/opt_lut.o \
+passes/opt/opt_lut_ins.o \
+passes/opt/opt_ffinv.o \
+passes/opt/pmux2shiftx.o \
+passes/opt/muxpack.o \
 passes/cmds/plugin.o \
 passes/cmds/design_stub.o \
 passes/cmds/select.o \
@@ -108,6 +134,7 @@ passes/techmap/attrmap.o \
 passes/techmap/flatten.o \
 passes/techmap/bmuxmap.o \
 passes/techmap/demuxmap.o \
+passes/techmap/simplemap.o \
 backends/rtlil/rtlil_backend.o \
 backends/cxxrtl/cxxrtl_backend.o \
 backends/verilog/verilog_backend.o \
