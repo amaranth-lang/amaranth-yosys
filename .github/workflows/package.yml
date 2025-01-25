@@ -9,7 +9,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          submodules: true
+          submodules: recursive
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -42,10 +42,13 @@ jobs:
           pip install dist/amaranth_yosys-*.whl
           python -m amaranth_yosys --help
           python -m amaranth_yosys \
-            -p "read_ilang tests/inverter.il" \
+            -p "read_rtlil tests/inverter.il" \
             -p "proc -nomux" \
             -p "memory_collect" \
-            -p "write_verilog"
+            -p "write_rtlil" \
+            -p "write_verilog" \
+            -p "proc" \
+            -p "write_json"
       - name: Print ccache statistics
         run: |
           ccache -s

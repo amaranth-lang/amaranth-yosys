@@ -1,12 +1,11 @@
 #!/bin/sh -ex
 
-WASI_SDK=wasi-sdk-19.0
-WASI_SDK_URL=https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-19/wasi-sdk-19.0-linux.tar.gz
+WASI_SDK=wasi-sdk-25.0-x86_64-linux
+WASI_SDK_URL=https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-25/wasi-sdk-25.0-x86_64-linux.tar.gz
 if ! [ -d ${WASI_SDK} ]; then curl -L ${WASI_SDK_URL} | tar xzf -; fi
 
 # This script does a lot of really awful things to Yosys to make the WASM artifact smaller.
-# That's necessary to reduce the startup latency, since currently wasmtime-py does not cache
-# the compiled code.
+# This improves startup latency and reduces download size.
 
 cat >yosys-src/Makefile.conf <<END
 export PATH := $(pwd)/${WASI_SDK}/bin:${PATH}
@@ -62,6 +61,7 @@ YOSYS_VER_STR='Amaranth Yosys $(YOSYS_VER) '"(PyPI ver ${YOSYS_PYPI_VER}, git sh
 YOSYS_OBJS="\
 kernel/version_${YOSYS_GIT_REV}.cc \
 kernel/driver.o \
+kernel/json.o \
 kernel/register.o \
 kernel/rtlil.o \
 kernel/log.o \
@@ -70,12 +70,14 @@ kernel/mem.o \
 kernel/ff.o \
 kernel/fmt.o \
 kernel/scopeinfo.o \
+kernel/cellaigs.o \
 kernel/satgen.o \
 kernel/qcsat.o \
 kernel/yosys.o \
 libs/bigint/BigInteger.o \
 libs/bigint/BigUnsigned.o \
 libs/sha1/sha1.o \
+libs/json11/json11.o \
 libs/ezsat/ezsat.o \
 libs/ezsat/ezminisat.o \
 libs/minisat/Options.o \
@@ -138,6 +140,7 @@ passes/techmap/simplemap.o \
 backends/rtlil/rtlil_backend.o \
 backends/cxxrtl/cxxrtl_backend.o \
 backends/verilog/verilog_backend.o \
+backends/json/json.o \
 "
 make -C yosys-src GIT_REV="${YOSYS_GIT_REV}" YOSYS_VER_STR="${YOSYS_VER_STR}" OBJS="${YOSYS_OBJS}" PRETTY=0 CXX="ccache clang"
 
