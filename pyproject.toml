@@ -8,11 +8,8 @@ dynamic = ["version", "dependencies"]
 name = "amaranth-yosys"
 description = "Specialized WebAssembly build of Yosys used by Amaranth HDL"
 readme = "README.rst"
-license = {text = "ISC"}
 authors = [{name = "whitequark", email = "whitequark@whitequark.org"}]
-classifiers = [
-  "License :: OSI Approved :: ISC License (ISCL)",
-]
+license = "ISC"
 
 requires-python = "~=3.8"
 
