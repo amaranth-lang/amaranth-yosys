@@ -18,7 +18,7 @@ jobs:
       - name: Check for a new release and update version requirement
         id: track-version
         run: |
-          pip install git+https://github.com/whitequark/track-pypi-dependency-version.git
+          pip install git+https://codeberg.org/whitequark/track-pypi-dependency-version.git
           track-pypi-dependency-version --status $GITHUB_OUTPUT -r dependencies.txt wasmtime
       - name: Install dependencies
         if: ${{ steps.track-version.outputs.status == 'stale' }}
