@@ -1,2 +1,2 @@
 importlib_resources>=1.4; python_version < "3.9"
-wasmtime<49,>=1
+wasmtime<50,>=1
