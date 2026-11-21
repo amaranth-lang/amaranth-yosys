@@ -10,7 +10,6 @@ except (ImportError, AttributeError):
 
 wasm_cfg = wasmtime.Config()
 wasm_cfg.cache = True
-wasm_cfg.wasm_exceptions = True  # Yosys's WASI uses WebAssembly exception handling
 
 wasi_cfg = wasmtime.WasiConfig()
 wasi_cfg.argv = ("amaranth-yosys", *sys.argv[1:])

@@ -11,7 +11,7 @@ readme = "README.rst"
 authors = [{name = "whitequark", email = "whitequark@whitequark.org"}]
 license = "ISC"
 
-requires-python = "~=3.9"
+requires-python = "~=3.8"
 
 [project.urls]
 "Source Code" = "https://github.com/amaranth-lang/amaranth-yosys"
