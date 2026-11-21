@@ -1,150 +1,37 @@
 #!/bin/sh -ex
 
-WASI_SDK=wasi-sdk-25.0-x86_64-linux
-WASI_SDK_URL=https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-25/wasi-sdk-25.0-x86_64-linux.tar.gz
-if ! [ -d ${WASI_SDK} ]; then curl -L ${WASI_SDK_URL} | tar xzf -; fi
+WASI_SDK=wasi-sdk-33.0-x86_64-linux
+WASI_SDK_URL=https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-33/${WASI_SDK}.tar.gz
+if ! [ -d "${WASI_SDK}" ]; then curl -fL "${WASI_SDK_URL}" | tar xzf -; fi
 
-# This script does a lot of really awful things to Yosys to make the WASM artifact smaller.
-# This improves startup latency and reduces download size.
+# Keep only the backends and passes used by Amaranth.
+YOSYS_COMPONENTS='read_rtlil;write_rtlil;write_verilog;write_cxxrtl;write_json'
+YOSYS_COMPONENTS="${YOSYS_COMPONENTS};proc;hierarchy;uniquify;submod;select;delete;plugin"
+YOSYS_COMPONENTS="${YOSYS_COMPONENTS};flatten;attrmap;simplemap;memory_collect"
+YOSYS_COMPONENTS="${YOSYS_COMPONENTS};opt;opt_mem;opt_mem_feedback;opt_mem_priority;opt_mem_widen"
+YOSYS_COMPONENTS="${YOSYS_COMPONENTS};share;wreduce;opt_demorgan;rmports;opt_lut;opt_lut_ins;opt_ffinv;pmux2shiftx;muxpack"
 
-cat >yosys-src/Makefile.conf <<END
-export PATH := $(pwd)/${WASI_SDK}/bin:${PATH}
-WASI_SYSROOT := $(pwd)/${WASI_SDK}/share/wasi-sysroot
+# WASI SDK 33's LTO libunwind fails to link with WebAssembly exceptions.
+cmake -S yosys-src -B build/yosys -G Ninja \
+    -DCMAKE_TOOLCHAIN_FILE="$(pwd)/${WASI_SDK}/share/cmake/wasi-sdk-p1.cmake" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF \
+    -DCMAKE_EXE_LINKER_FLAGS=-Wl,--strip-all \
+    -DYOSYS_COMPILER_LAUNCHER=ccache \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DYOSYS_ENABLE_UNIT_TESTS=OFF \
+    -DYOSYS_USE_BUNDLED_LIBS=ON \
+    -DYOSYS_WITHOUT_ABC=ON \
+    -DYOSYS_WITHOUT_ZLIB=ON \
+    -DYOSYS_WITHOUT_LIBFFI=ON \
+    -DYOSYS_WITHOUT_READLINE=ON \
+    -DYOSYS_WITHOUT_EDITLINE=ON \
+    -DYOSYS_WITHOUT_SLANG=ON \
+    -DYOSYS_WITHOUT_TCL=ON \
+    -DYOSYS_COMPONENTS="${YOSYS_COMPONENTS}"
+cmake --build build/yosys --target yosys
 
-CONFIG := wasi
-PREFIX := /
-
-ENABLE_TCL := 0
-ENABLE_ABC := 0
-ENABLE_GLOB := 0
-ENABLE_PLUGINS := 0
-ENABLE_READLINE := 0
-ENABLE_EDITLINE := 0
-ENABLE_VERIFIC := 0
-ENABLE_COVER := 0
-ENABLE_LIBYOSYS := 0
-ENABLE_PROTOBUF := 0
-ENABLE_ZLIB := 0
-
-CXXFLAGS += -D_WASI_EMULATED_PROCESS_CLOCKS -flto
-LDFLAGS += -lwasi-emulated-process-clocks -flto -Wl,--strip-all
-END
-
-cat >yosys-src/frontends/verilog/preproc_stub.cc <<END
-#include "preproc.h"
-
-YOSYS_NAMESPACE_BEGIN
-
-struct define_body_t {};
-
-define_map_t::define_map_t() {}
-define_map_t::~define_map_t() {}
-void define_map_t::clear() {}
-
-YOSYS_NAMESPACE_END
-END
-
-cat >yosys-src/passes/cmds/design_stub.cc <<END
-#include "kernel/yosys.h"
-
-YOSYS_NAMESPACE_BEGIN
-
-std::map<std::string, RTLIL::Design*> saved_designs;
-std::vector<RTLIL::Design*> pushed_designs;
-
-YOSYS_NAMESPACE_END
-END
-
-YOSYS_PYPI_VER=$(python3 setup.py --version)
-YOSYS_GIT_REV=$(git -C yosys-src rev-parse --short HEAD | tr -d '\n')
-YOSYS_VER_STR='Amaranth Yosys $(YOSYS_VER) '"(PyPI ver ${YOSYS_PYPI_VER}, git sha1 ${YOSYS_GIT_REV})"
-YOSYS_OBJS="\
-kernel/version_${YOSYS_GIT_REV}.cc \
-kernel/driver.o \
-kernel/json.o \
-kernel/register.o \
-kernel/rtlil.o \
-kernel/log.o \
-kernel/calc.o \
-kernel/mem.o \
-kernel/ff.o \
-kernel/fmt.o \
-kernel/scopeinfo.o \
-kernel/cellaigs.o \
-kernel/satgen.o \
-kernel/qcsat.o \
-kernel/yosys.o \
-libs/bigint/BigInteger.o \
-libs/bigint/BigUnsigned.o \
-libs/sha1/sha1.o \
-libs/json11/json11.o \
-libs/ezsat/ezsat.o \
-libs/ezsat/ezminisat.o \
-libs/minisat/Options.o \
-libs/minisat/SimpSolver.o \
-libs/minisat/Solver.o \
-libs/minisat/System.o \
-frontends/ast/ast.o \
-frontends/ast/simplify.o \
-frontends/rtlil/rtlil_parser.tab.o \
-frontends/rtlil/rtlil_lexer.o \
-frontends/rtlil/rtlil_frontend.o \
-frontends/verilog/preproc_stub.o \
-frontends/verilog/const2ast.o \
-passes/hierarchy/hierarchy.o \
-passes/hierarchy/uniquify.o \
-passes/hierarchy/submod.o \
-passes/proc/proc.o \
-passes/proc/proc_prune.o \
-passes/proc/proc_clean.o \
-passes/proc/proc_rmdead.o \
-passes/proc/proc_init.o \
-passes/proc/proc_arst.o \
-passes/proc/proc_memwr.o \
-passes/proc/proc_mux.o \
-passes/proc/proc_dlatch.o \
-passes/proc/proc_dff.o \
-passes/proc/proc_rom.o \
-passes/opt/opt.o \
-passes/opt/opt_merge.o \
-passes/opt/opt_mem.o \
-passes/opt/opt_mem_feedback.o \
-passes/opt/opt_mem_priority.o \
-passes/opt/opt_mem_widen.o \
-passes/opt/opt_muxtree.o \
-passes/opt/opt_reduce.o \
-passes/opt/opt_dff.o \
-passes/opt/opt_share.o \
-passes/opt/opt_clean.o \
-passes/opt/opt_expr.o \
-passes/opt/share.o \
-passes/opt/wreduce.o \
-passes/opt/opt_demorgan.o \
-passes/opt/rmports.o \
-passes/opt/opt_lut.o \
-passes/opt/opt_lut_ins.o \
-passes/opt/opt_ffinv.o \
-passes/opt/pmux2shiftx.o \
-passes/opt/muxpack.o \
-passes/cmds/plugin.o \
-passes/cmds/design_stub.o \
-passes/cmds/select.o \
-passes/cmds/delete.o \
-passes/cmds/clean_zerowidth.o \
-passes/memory/memory_collect.o \
-passes/techmap/attrmap.o \
-passes/techmap/flatten.o \
-passes/techmap/bmuxmap.o \
-passes/techmap/demuxmap.o \
-passes/techmap/simplemap.o \
-backends/rtlil/rtlil_backend.o \
-backends/cxxrtl/cxxrtl_backend.o \
-backends/verilog/verilog_backend.o \
-backends/json/json.o \
-"
-make -C yosys-src GIT_REV="${YOSYS_GIT_REV}" YOSYS_VER_STR="${YOSYS_VER_STR}" OBJS="${YOSYS_OBJS}" PRETTY=0 CXX="ccache clang"
-
-cp yosys-src/yosys.wasm amaranth_yosys/
+cp build/yosys/yosys amaranth_yosys/yosys.wasm
 rm -rf amaranth_yosys/share
 mkdir -p amaranth_yosys/share/include/backends/cxxrtl
-cp -r yosys-src/share/include/backends/cxxrtl/runtime amaranth_yosys/share/include/backends/cxxrtl/
+cp -r build/yosys/share/include/backends/cxxrtl/runtime amaranth_yosys/share/include/backends/cxxrtl/
